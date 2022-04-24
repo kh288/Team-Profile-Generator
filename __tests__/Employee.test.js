@@ -3,7 +3,11 @@ const Employee = require(`../lib/Employee`);
 // Initialize tests for the Employee Class
 describe(`Employee`, () => {
     // We create a new employee with these given arguments
-    employee = new Employee(`Kevin`, 5, `derp@gmail.com`);
+    const name = `Kevin`;
+    const id = 5;
+    const email = `derp@gmail.com`;
+
+    employee = new Employee(name, id, email);
     it(`Creating an employee should be an object`, () => {
         expect(typeof employee).toEqual(`object`);
     })
