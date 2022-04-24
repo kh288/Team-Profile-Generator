@@ -16,30 +16,35 @@ describe(`Engineer`, () => {
     describe(`getName`, () => {
         it(`should return the name that has been set for the "name" arguement`, () => {
             // We expect the getName function to return `Kevin`
+            expect(engineer.name).toEqual(`Kevin`);
             expect(engineer.getName()).toEqual(`Kevin`);
         })
     })
     describe(`getId`, () => {
         it(`should return the Id that has been set for the "id" arguement`, () => {
             // We expect the getId function to return `5`
+            expect(engineer.id).toEqual(5);
             expect(engineer.getId()).toEqual(5);
         })
     })
     describe(`getEmail`, () => {
         it(`should return the email that has been set for the "email" arguement`, () => {
             // We expect the getEmail function to return `derp@gmail.com`
+            expect(engineer.email).toEqual(`derp@gmail.com`);
             expect(engineer.getEmail()).toEqual(`derp@gmail.com`);
         })
     })
     describe(`getRole`, () => {
         it(`should return the role for the Engineer class`, () => {
             // We expect the getRole function to return `Engineer`
+            expect(engineer.role).toEqual(`Engineer`);
             expect(engineer.getRole()).toEqual(`Engineer`);
         })
     })
     describe(`getGithub`, () => {
         it(`should return the value of their github username`, () => {
             // We expect the github username to be added to a link and `getGithub()` is called
+            expect(engineer.github).toEqual(`kh288`);
             expect(engineer.getGithub()).toEqual(`https://github.com/kh288`);
         })
     })
