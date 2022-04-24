@@ -1,4 +1,3 @@
-const { describe } = require("yargs");
 const Manager = require(`../lib/Manager`)
 
 // Initialize tests for the Manager Class
