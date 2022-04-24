@@ -34,13 +34,13 @@ describe(`Engineer`, () => {
     describe(`getRole`, () => {
         it(`should return the role for the Engineer class`, () => {
             // We expect the getRole function to return `Engineer`
-            expect(employee.getRole()).toEqual(`Engineer`);
+            expect(engineer.getRole()).toEqual(`Engineer`);
         })
     })
     describe(`getGithub`, () => {
         it(`should return the value of their github username`, () => {
             // We expect the github username to be added to a link and `getGithub()` is called
-            expect(egineer.getGithub().toEqual(`https://github.com/${github}`))
+            expect(engineer.getGithub().toEqual(`https://github.com/${github}`))
         })
     })
 })
