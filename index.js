@@ -1,7 +1,7 @@
-const Manager = require(`./lib/Manager`);
-const Engineer = require(`./lib/Engineer`);
-const Intern = require(`./lib/Intern`);
-const inquirer = require(`inquirer`);
+const Manager = require(`./lib/Manager`)
+const Engineer = require(`./lib/Engineer`)
+const Intern = require(`./lib/Intern`)
+const inquirer = require(`inquirer`)
 
 const htmlGenerate = 
 `<!DOCTYPE html>
@@ -25,13 +25,13 @@ const htmlGenerate =
         <div class="d-md-flex p-3">
             <div class="row gap-3">
                 <!-- Generated content goes -->
-
+                
             </div>
         </div>
 
     </div>
 </body>
-</html>`;
+</html>`
 
 // Initial Prompt sequence:
 
@@ -66,20 +66,82 @@ const employeeQuestions = [{
     type: `input`,
     message: `Whats the employee's email?: `,
     name: `email`,
-}];
+}]
 
+const managerQuestions = [{
+    type: `input`,
+    message: `Enter an office number: `,
+    name: `officeNumber`,
+}]
+
+const engineerQuestions = [{
+    type: `input`,
+    message: `Enter your github username: `,
+    name: `github`,
+}]
+
+const internQuestions = [{
+    type: `input`,
+    message: `Enter the school you attended: `,
+    name: `school`,
+}]
+
+
+
+// Only gets prompted if manager is selected
+function managerPrompt() {
+    inquirer
+    .prompt(managerQuestions)
+    .then((response) => {
+        return response.officeNumber;
+    })
+}
+// Only gets prompted if engineer is selected
+function engineerPrompt() {
+    inquirer
+    .prompt(engineerQuestions)
+    .then((response) => {
+        return response.officeNumber;
+    })
+}
+// Only gets prompted if intern is selected
+function internPrompt() {
+    inquirer
+    .prompt(internQuestions)
+    .then((response) => {
+        return response.officeNumber;
+    })
+}
+
+
+// Returns an employee object that turns into a manger, engineer, or intern
 function employeePrompt() {
     inquirer
-      .prompt(employeeQuestions)
-      .then((response) => {
-          console.log(response);
-      }
-      );
+    .prompt(employeeQuestions)
+    .then((response) => {
+        switch(response.role) {
+            case(`Manager`):
+                var manager = new Manager(response.name, response.role, response.id, response.email, managerPrompt())
+                return manager
+            case(`Engineer`):
+                var engineer = new Engineer(response.name, response.role, response.id, response.email, engineerPrompt())
+                return engineer
+            case(`Intern`):
+                var intern = new Intern(response.name, response.role, response.id, response.email, internPrompt())
+                return intern
+        }
+    })
+}
+
+function intro() {
+    console.log("Welcome to the Team Profile Generator!")
+    console.log("Please fill out the following prompts to create a team")
 }
 
 function init() {
-
-    employeePrompt();
+    intro()
+    employeePrompt()
+    // console.log(employee)
 }
 
-init();
+init()
