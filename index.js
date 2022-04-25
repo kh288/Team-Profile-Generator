@@ -1,7 +1,7 @@
-const Manager = require(`../lib/Manager`);
-const Engineer = require(`../lib/Engineer`);
-const Intern = require(`../lib/Intern`);
-require(`inquirer`);
+const Manager = require(`./lib/Manager`);
+const Engineer = require(`./lib/Engineer`);
+const Intern = require(`./lib/Intern`);
+const inquirer = require(`inquirer`);
 
 const htmlGenerate = 
 `<!DOCTYPE html>
@@ -31,4 +31,55 @@ const htmlGenerate =
 
     </div>
 </body>
-</html>`
+</html>`;
+
+// Initial Prompt sequence:
+
+// Employee Name
+// Employee Role
+// Employee ID
+// Employee email
+
+// Manager:
+// Office number
+
+// Engineer:
+// github
+
+// Intern:
+// school
+
+const employeeQuestions = [{
+    type: `input`,
+    message: `Whats the employee's name?: `,
+    name: `name`,
+},{
+    type: `list`,
+    message: `Choose your Employee's role: `,
+    choices: [`Manager`, `Engineer`, `Intern`],
+    name: `role`,
+},{
+    type: `input`,
+    message: `Whats the employee's id?: `,
+    name: `id`,
+},{
+    type: `input`,
+    message: `Whats the employee's email?: `,
+    name: `email`,
+}];
+
+function employeePrompt() {
+    inquirer
+      .prompt(employeeQuestions)
+      .then((response) => {
+          console.log(response);
+      }
+      );
+}
+
+function init() {
+
+    employeePrompt();
+}
+
+init();
