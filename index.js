@@ -3,6 +3,8 @@ const Engineer = require(`./lib/Engineer`)
 const Intern = require(`./lib/Intern`)
 const inquirer = require(`inquirer`)
 
+
+
 const htmlGenerate = 
 `<!DOCTYPE html>
 <html lang="en">
@@ -86,8 +88,6 @@ const internQuestions = [{
     name: `school`,
 }]
 
-
-
 // Only gets prompted if manager is selected
 function managerPrompt() {
     inquirer
@@ -96,6 +96,7 @@ function managerPrompt() {
         return response.officeNumber;
     })
 }
+
 // Only gets prompted if engineer is selected
 function engineerPrompt() {
     inquirer
@@ -104,6 +105,7 @@ function engineerPrompt() {
         return response.officeNumber;
     })
 }
+
 // Only gets prompted if intern is selected
 function internPrompt() {
     inquirer
@@ -113,7 +115,6 @@ function internPrompt() {
     })
 }
 
-
 // Returns an employee object that turns into a manger, engineer, or intern
 function employeePrompt() {
     inquirer
@@ -122,15 +123,55 @@ function employeePrompt() {
         switch(response.role) {
             case(`Manager`):
                 var manager = new Manager(response.name, response.role, response.id, response.email, managerPrompt())
-                return manager
+                const htmlManager =
+                    `<div class="card col-4 p-3 bg-secondary text-light border">
+                    <h2 id="name">${manager.getName()}</h2>
+                    <h3 id="role">${manager.getRole()}</h3>
+                    <ul class="list-group list-group-flush rounded">
+                        <li id="id" class="list-group-item bg-white">ID: ${manager.getId()}</li>
+                        <li id="email" class="list-group-item bg-white">Email: ${manager.getEmail()}</li>
+                        <li id="office-number" class="list-group-item bg-white">Office Number: ${manager.officeNumber}</li>
+                    </ul>
+                    </div>`
+                return htmlManager
             case(`Engineer`):
                 var engineer = new Engineer(response.name, response.role, response.id, response.email, engineerPrompt())
-                return engineer
+                const htmlEngineer =
+                `<div class="card col-4 p-3 bg-secondary text-light border">
+                <h2 id="name">${engineer.getName()}</h2>
+                <h3 id="role">${engineer.getRole()}</h3>
+                <ul class="list-group list-group-flush rounded">
+                    <li id="id" class="list-group-item bg-white">ID: ${engineer.getId()}</li>
+                    <li id="email" class="list-group-item bg-white">Email: ${engineer.getEmail()}</li>
+                    <li id="office-number" class="list-group-item bg-white">Github: ${engineer.getGithub()}</li>
+                </ul>
+                </div>`
+                return htmlEngineer
             case(`Intern`):
                 var intern = new Intern(response.name, response.role, response.id, response.email, internPrompt())
-                return intern
+                const htmlIntern =
+                `<div class="card col-4 p-3 bg-secondary text-light border">
+                <h2 id="name">${intern.getName()}</h2>
+                <h3 id="role">${intern.getRole()}</h3>
+                <ul class="list-group list-group-flush rounded">
+                    <li id="id" class="list-group-item bg-white">ID: ${intern.getId()}</li>
+                    <li id="email" class="list-group-item bg-white">Email: ${intern.getEmail()}</li>
+                    <li id="office-number" class="list-group-item bg-white">School: ${intern.getSchool()}</li>
+                </ul>
+                </div>`
+                return htmlIntern
         }
     })
+}
+
+function generateHTML(employee) {
+    // switch(employee.role) {
+    //     case(`Manager`):
+
+    //     case(`Engineer`):
+
+    //     case(`Intern`):
+
 }
 
 function intro() {
@@ -140,8 +181,7 @@ function intro() {
 
 function init() {
     intro()
-    employeePrompt()
-    // console.log(employee)
+    generateHTML(employeePrompt())
 }
 
 init()
