@@ -1,9 +1,9 @@
-const Manager = require(`./lib/Manager`)
-const Engineer = require(`./lib/Engineer`)
-const Intern = require(`./lib/Intern`)
-const inquirer = require(`inquirer`)
+const Manager = require(`./lib/Manager`);
+const Engineer = require(`./lib/Engineer`);
+const Intern = require(`./lib/Intern`);
+const inquirer = require(`inquirer`);
 
-
+var htmlEmployee = [];
 
 const htmlGenerate = 
 `<!DOCTYPE html>
@@ -33,7 +33,7 @@ const htmlGenerate =
 
     </div>
 </body>
-</html>`
+</html>`;
 
 // Initial Prompt sequence:
 
@@ -68,25 +68,25 @@ const employeeQuestions = [{
     type: `input`,
     message: `Whats the employee's email?: `,
     name: `email`,
-}]
+}];
 
 const managerQuestions = [{
     type: `input`,
     message: `Enter an office number: `,
     name: `officeNumber`,
-}]
+}];
 
 const engineerQuestions = [{
     type: `input`,
     message: `Enter your github username: `,
     name: `github`,
-}]
+}];
 
 const internQuestions = [{
     type: `input`,
     message: `Enter the school you attended: `,
     name: `school`,
-}]
+}];
 
 // Only gets prompted if manager is selected
 function managerPrompt() {
@@ -122,7 +122,8 @@ function employeePrompt() {
     .then((response) => {
         switch(response.role) {
             case(`Manager`):
-                var manager = new Manager(response.name, response.role, response.id, response.email, managerPrompt())
+                var office = managerPrompt();
+                var manager = new Manager(response.name, response.role, response.id, response.email, office);
                 const htmlManager =
                     `<div class="card col-4 p-3 bg-secondary text-light border">
                     <h2 id="name">${manager.getName()}</h2>
@@ -132,10 +133,12 @@ function employeePrompt() {
                         <li id="email" class="list-group-item bg-white">Email: ${manager.getEmail()}</li>
                         <li id="office-number" class="list-group-item bg-white">Office Number: ${manager.officeNumber}</li>
                     </ul>
-                    </div>`
-                return htmlManager
+                    </div>`;
+                htmlEmployee.push(htmlManager);
+                break;
             case(`Engineer`):
-                var engineer = new Engineer(response.name, response.role, response.id, response.email, engineerPrompt())
+                var githubName = engineerPrompt();
+                var engineer = new Engineer(response.name, response.role, response.id, response.email, githubName);
                 const htmlEngineer =
                 `<div class="card col-4 p-3 bg-secondary text-light border">
                 <h2 id="name">${engineer.getName()}</h2>
@@ -145,10 +148,12 @@ function employeePrompt() {
                     <li id="email" class="list-group-item bg-white">Email: ${engineer.getEmail()}</li>
                     <li id="office-number" class="list-group-item bg-white">Github: ${engineer.getGithub()}</li>
                 </ul>
-                </div>`
-                return htmlEngineer
+                </div>`;
+                htmlEmployee.push(htmlEngineer);
+                break;
             case(`Intern`):
-                var intern = new Intern(response.name, response.role, response.id, response.email, internPrompt())
+                var school = internPrompt();
+                var intern = new Intern(response.name, response.role, response.id, response.email, school);
                 const htmlIntern =
                 `<div class="card col-4 p-3 bg-secondary text-light border">
                 <h2 id="name">${intern.getName()}</h2>
@@ -158,8 +163,9 @@ function employeePrompt() {
                     <li id="email" class="list-group-item bg-white">Email: ${intern.getEmail()}</li>
                     <li id="office-number" class="list-group-item bg-white">School: ${intern.getSchool()}</li>
                 </ul>
-                </div>`
-                return htmlIntern
+                </div>`;
+                htmlEmployee.push(htmlIntern);
+                break;
         }
     })
 }
@@ -174,14 +180,33 @@ function generateHTML(employee) {
 
 }
 
+function again() {
+    inquirer
+    .prompt([{
+        type: `list`,
+        message: `Add another Employee?`,
+        choices: [`Yes`, `No`],
+        name: `again`,
+    }]).then((response) => {
+        if (response.again === `Yes`) {
+            init();
+            return;
+        } else {
+            console.log(`Your HTML file shall be generated`);
+            return;
+        }
+    })
+}
+
 function intro() {
-    console.log("Welcome to the Team Profile Generator!")
-    console.log("Please fill out the following prompts to create a team")
+    console.log("Welcome to the Team Profile Generator!");
+    console.log("Please fill out the following prompts to create a team");
 }
 
 function init() {
-    intro()
-    generateHTML(employeePrompt())
+    employeePrompt();
+    // generateHTML(htmlEmployee)
 }
 
-init()
+intro();
+init();
