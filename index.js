@@ -117,7 +117,7 @@ function managerPrompt() {
         <h3 id="role">${manager.getRole()}</h3>
         <ul class="list-group list-group-flush rounded">
             <li id="id" class="list-group-item bg-white">ID: ${manager.getId()}</li>
-            <li id="email" class="list-group-item bg-white">Email: ${manager.getEmail()}</li>
+            <li id="email" class="list-group-item bg-white">Email: <a href="${manager.getEmail()}" target="_blank">${manager.getEmail()}</a></li>
             <li id="office-number" class="list-group-item bg-white">Office Number: ${manager.officeNumber}</li>
         </ul>
         </div>`;
