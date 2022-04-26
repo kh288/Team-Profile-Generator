@@ -23,8 +23,8 @@ const htmlGenerate1 =
     </div>
     <div class="justify-content">
         <!-- Main Area content -->
-        <div class="d-md-flex p-3">
-            <div class="row gap-3">
+        <div class="grid p-3">
+            <div class="row justify-content-center gap-3">
                 <!-- Generated content goes -->`;
 
 let htmlEmployee = [];
@@ -112,7 +112,7 @@ function managerPrompt() {
     .then((answer) => {
         var manager = new Manager(answer.name, answer.id, answer.email, answer.officeNumber);
         const htmlManager =
-        `<div class="card col-4 p-3 bg-secondary text-light border">
+        `<div class="card col-md-3 p-3 bg-secondary text-light border">
         <h2 id="name">${manager.getName()}</h2>
         <h3 id="role">${manager.getRole()}</h3>
         <ul class="list-group list-group-flush rounded">
@@ -148,13 +148,13 @@ function engineerPrompt() {
     .then((answer) => {
         var engineer = new Engineer(answer.name, answer.id, answer.email, answer.github);
         const htmlEngineer =
-            `<div class="card col-4 p-3 bg-secondary text-light border">
+            `<div class="card col-md-3 p-3 bg-secondary text-light border">
             <h2 id="name">${engineer.getName()}</h2>
             <h3 id="role">${engineer.getRole()}</h3>
             <ul class="list-group list-group-flush rounded">
                 <li id="id" class="list-group-item bg-white">ID: ${engineer.getId()}</li>
-                <li id="email" class="list-group-item bg-white">Email: ${engineer.getEmail()}</li>
-                <li id="office-number" class="list-group-item bg-white">Github: ${engineer.getGithub()}</li>
+                <li id="email" class="list-group-item bg-white">Email: <a href="${engineer.getEmail()}" target="_blank">${engineer.getEmail()}</a></li>
+                <li id="office-number" class="list-group-item bg-white">Github: <a href="${engineer.getGithub()}" target="_blank">${engineer.github}</a></li>
             </ul>
             </div>`;
         htmlEmployee.push(htmlEngineer);
@@ -184,12 +184,12 @@ function internPrompt() {
     .then((answer) => {
         var intern = new Intern(answer.name, answer.id, answer.email, answer.school);
         const htmlIntern =
-            `<div class="card col-4 p-3 bg-secondary text-light border">
+            `<div class="card col-md-3 p-3 bg-secondary text-light border">
             <h2 id="name">${intern.getName()}</h2>
             <h3 id="role">${intern.getRole()}</h3>
             <ul class="list-group list-group-flush rounded">
                 <li id="id" class="list-group-item bg-white">ID: ${intern.getId()}</li>
-                <li id="email" class="list-group-item bg-white">Email: ${intern.getEmail()}</li>
+                <li id="email" class="list-group-item bg-white">Email: <a href="${intern.getEmail()}" target="_blank">${intern.getEmail()}</a></li>
                 <li id="office-number" class="list-group-item bg-white">School: ${intern.getSchool()}</li>
             </ul>
             </div>`;
@@ -236,153 +236,3 @@ function init() {
 
 intro();
 init();
-
-// Initial Prompt sequence:
-
-// Employee Name
-// Employee Role
-// Employee ID
-// Employee email
-
-// Manager:
-// Office number
-
-// Engineer:
-// github
-
-// Intern:
-// school
-
-// const employeeQuestions = [{
-//     type: `input`,
-//     message: `Whats the employee's name?: `,
-//     name: `name`,
-// },{
-//     type: `list`,
-//     message: `Choose your Employee's role: `,
-//     choices: [`Manager`, `Engineer`, `Intern`],
-//     name: `role`,
-// },{
-//     type: `input`,
-//     message: `Whats the employee's id?: `,
-//     name: `id`,
-// },{
-//     type: `input`,
-//     message: `Whats the employee's email?: `,
-//     name: `email`,
-// }];
-
-// async function again() {
-//     inquirer
-//     .prompt([{
-//         type: `list`,
-//         message: `Add another Employee?`,
-//         choices: [`Yes`, `No`],
-//         name: `again`,
-//     }]).then((response) => {
-//         if (response.again === `Yes`) {
-//             init();
-//             return;
-//         } else {
-//             console.log(`Your HTML file shall be generated`);
-//             return;
-//         }
-//     })
-// }
-
-// switch(response.role) {
-//     case(`Manager`):
-//         var man = managerPrompt();
-//         var manager = new Manager(response.name, response.role, response.id, response.email, man);
-//         const htmlManager =
-//             `<div class="card col-4 p-3 bg-secondary text-light border">
-//             <h2 id="name">${manager.getName()}</h2>
-//             <h3 id="role">${manager.getRole()}</h3>
-//             <ul class="list-group list-group-flush rounded">
-//                 <li id="id" class="list-group-item bg-white">ID: ${manager.getId()}</li>
-//                 <li id="email" class="list-group-item bg-white">Email: ${manager.getEmail()}</li>
-//                 <li id="office-number" class="list-group-item bg-white">Office Number: ${manager.officeNumber}</li>
-//             </ul>
-//             </div>`;
-//         htmlEmployee.push(htmlManager);
-//         // again();
-//         break;
-//     case(`Engineer`):
-//         var githubName = await engineerPrompt();
-//         var engineer = new Engineer(response.name, response.role, response.id, response.email, githubName);
-//         const htmlEngineer =
-//             `<div class="card col-4 p-3 bg-secondary text-light border">
-//             <h2 id="name">${engineer.getName()}</h2>
-//             <h3 id="role">${engineer.getRole()}</h3>
-//             <ul class="list-group list-group-flush rounded">
-//                 <li id="id" class="list-group-item bg-white">ID: ${engineer.getId()}</li>
-//                 <li id="email" class="list-group-item bg-white">Email: ${engineer.getEmail()}</li>
-//                 <li id="office-number" class="list-group-item bg-white">Github: ${engineer.getGithub()}</li>
-//             </ul>
-//             </div>`;
-//         htmlEmployee.push(htmlEngineer);
-//         // again();
-//         break;
-//     case(`Intern`):
-//         var school = await internPrompt();
-//         var intern = new Intern(response.name, response.role, response.id, response.email, school);
-//         const htmlIntern =
-//             `<div class="card col-4 p-3 bg-secondary text-light border">
-//             <h2 id="name">${intern.getName()}</h2>
-//             <h3 id="role">${intern.getRole()}</h3>
-//             <ul class="list-group list-group-flush rounded">
-//                 <li id="id" class="list-group-item bg-white">ID: ${intern.getId()}</li>
-//                 <li id="email" class="list-group-item bg-white">Email: ${intern.getEmail()}</li>
-//                 <li id="office-number" class="list-group-item bg-white">School: ${intern.getSchool()}</li>
-//             </ul>
-//             </div>`;
-//         htmlEmployee.push(htmlIntern);
-//         // again();
-//         break;
-//     }
-
-    // inquirer.prompt([{
-    //     type: `list`,
-    //     message: `Add an Employee?`,
-    //     choices: [`Yes`, `No`],
-    //     name: `add`,
-    // }])
-    // .then(result => {
-    //     if (result.add === `Yes`) {
-    //         employeePrompt();
-    //     }
-    //     return result
-    // }).then(result => {
-    //     if (result.add === `No`) {
-    //         generateHTML();
-    //     } else {
-    //         init();
-    //     }
-    // })
-
-// Only gets prompted if manager is selected
-// async function managerPrompt() {
-//     inquirer
-//     .prompt(managerQuestions)
-//     .then((response) => {
-//         return response.officeNumber;
-//     })
-// }
-
-// Only gets prompted if engineer is selected
-// async function engineerPrompt() {
-//     inquirer
-//     .prompt(engineerQuestions)
-//     .then((response) => {
-//         return response.officeNumber;
-//     })
-// }
-
-// Only gets prompted if intern is selected
-// async function internPrompt() {
-//     inquirer
-//     .prompt(internQuestions)
-//     .then((response) => {
-//         return response.officeNumber;
-//     })
-// }
