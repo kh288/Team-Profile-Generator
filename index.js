@@ -2,6 +2,7 @@ const Manager = require(`./lib/Manager`);
 const Engineer = require(`./lib/Engineer`);
 const Intern = require(`./lib/Intern`);
 const inquirer = require(`inquirer`);
+const fs = require(`fs`);
 
 const htmlGenerate1 = 
 `<!DOCTYPE html>
@@ -24,18 +25,217 @@ const htmlGenerate1 =
         <!-- Main Area content -->
         <div class="d-md-flex p-3">
             <div class="row gap-3">
-                <!-- Generated content goes -->
-`;
+                <!-- Generated content goes -->`;
 
 let htmlEmployee = [];
 
-const htmlGenerate2 = `
-            </div>
+const htmlGenerate2 = 
+`            </div>
         </div>
 
     </div>
 </body>
 </html>`;
+
+const managerQuestions = [{
+    type: `input`,
+    message: `Whats the Manager's name?: `,
+    name: `name`,
+},{
+    type: `input`,
+    message: `Whats the Manager's id?: `,
+    name: `id`,
+},{
+    type: `input`,
+    message: `Whats the Manager's email?: `,
+    name: `email`,
+},{
+    type: `input`,
+    message: `Enter an office number: `,
+    name: `officeNumber`,
+},{
+    type: `list`,
+    message: `Another Employee?`,
+    choices: [`Manager`, `Engineer`, `Intern`, `Exit`],
+    name: `role`
+}];
+
+const engineerQuestions = [{
+    type: `input`,
+    message: `Whats the Engineer's name?: `,
+    name: `name`,
+},{
+    type: `input`,
+    message: `Whats the Engineer's id?: `,
+    name: `id`,
+},{
+    type: `input`,
+    message: `Whats the Engineer's email?: `,
+    name: `email`,
+},{
+    type: `input`,
+    message: `Enter your github username: `,
+    name: `github`,
+},{
+    type: `list`,
+    message: `Another Employee?`,
+    choices: [`Manager`, `Engineer`, `Intern`, `Exit`],
+    name: `role`
+}];
+
+const internQuestions = [{
+    type: `input`,
+    message: `Whats the Intern's name?: `,
+    name: `name`,
+},{
+    type: `input`,
+    message: `Whats the Intern's id?: `,
+    name: `id`,
+},{
+    type: `input`,
+    message: `Whats the Intern's email?: `,
+    name: `email`,
+},{
+    type: `input`,
+    message: `Enter the school you attended: `,
+    name: `school`,
+},{
+    type: `list`,
+    message: `Another Employee?`,
+    choices: [`Manager`, `Engineer`, `Intern`, `Exit`],
+    name: `role`
+}];
+
+// Returns an employee object that turns into a manger, engineer, or intern
+function managerPrompt() {
+    inquirer.prompt(managerQuestions)
+    .then((answer) => {
+        var manager = new Manager(answer.name, answer.id, answer.email, answer.officeNumber);
+        const htmlManager =
+        `<div class="card col-4 p-3 bg-secondary text-light border">
+        <h2 id="name">${manager.getName()}</h2>
+        <h3 id="role">${manager.getRole()}</h3>
+        <ul class="list-group list-group-flush rounded">
+            <li id="id" class="list-group-item bg-white">ID: ${manager.getId()}</li>
+            <li id="email" class="list-group-item bg-white">Email: ${manager.getEmail()}</li>
+            <li id="office-number" class="list-group-item bg-white">Office Number: ${manager.officeNumber}</li>
+        </ul>
+        </div>`;
+        htmlEmployee.push(htmlManager);
+
+        switch(answer.role) {
+            case(`Exit`):
+                console.log("Done! Creating your HTML file now!");
+                generateHTML();
+                return;
+            case(`Manager`):
+                managerPrompt();
+                return;
+            case(`Engineer`):
+                engineerPrompt();
+                return;
+            case(`Intern`):
+                internPrompt();
+                return;
+            default:
+                console.log("Error, not a proper selection");
+        }
+    });
+}
+
+function engineerPrompt() {
+    inquirer.prompt(engineerQuestions)
+    .then((answer) => {
+        var engineer = new Engineer(answer.name, answer.id, answer.email, answer.github);
+        const htmlEngineer =
+            `<div class="card col-4 p-3 bg-secondary text-light border">
+            <h2 id="name">${engineer.getName()}</h2>
+            <h3 id="role">${engineer.getRole()}</h3>
+            <ul class="list-group list-group-flush rounded">
+                <li id="id" class="list-group-item bg-white">ID: ${engineer.getId()}</li>
+                <li id="email" class="list-group-item bg-white">Email: ${engineer.getEmail()}</li>
+                <li id="office-number" class="list-group-item bg-white">Github: ${engineer.getGithub()}</li>
+            </ul>
+            </div>`;
+        htmlEmployee.push(htmlEngineer);
+
+        switch(answer.role) {
+            case(`Exit`):
+                console.log("Done! Creating your HTML file now!");
+                generateHTML();
+                return;
+            case(`Manager`):
+                managerPrompt();
+                return;
+            case(`Engineer`):
+                engineerPrompt();
+                return;
+            case(`Intern`):
+                internPrompt();
+                return;
+            default:
+                console.log("Error, not a proper selection");
+        }
+    });
+}
+
+function internPrompt() {
+    inquirer.prompt(internQuestions)
+    .then((answer) => {
+        var intern = new Intern(answer.name, answer.id, answer.email, answer.school);
+        const htmlIntern =
+            `<div class="card col-4 p-3 bg-secondary text-light border">
+            <h2 id="name">${intern.getName()}</h2>
+            <h3 id="role">${intern.getRole()}</h3>
+            <ul class="list-group list-group-flush rounded">
+                <li id="id" class="list-group-item bg-white">ID: ${intern.getId()}</li>
+                <li id="email" class="list-group-item bg-white">Email: ${intern.getEmail()}</li>
+                <li id="office-number" class="list-group-item bg-white">School: ${intern.getSchool()}</li>
+            </ul>
+            </div>`;
+        htmlEmployee.push(htmlIntern);
+
+        switch(answer.role) {
+            case(`Exit`):
+                console.log("Done! Creating your HTML file now!");
+                generateHTML();
+                return;
+            case(`Manager`):
+                managerPrompt();
+                return;
+            case(`Engineer`):
+                engineerPrompt();
+                return;
+            case(`Intern`):
+                internPrompt();
+                return;
+            default:
+                console.log("Error, not a proper selection");
+        }
+    });
+}
+
+function generateHTML() {
+    const html = `${htmlGenerate1}${htmlEmployee}${htmlGenerate2}`;
+    // console.log(typeof html);
+    fs.writeFile(`./dist/generated.html`, html, (error) => {
+        if (error) {
+            console.log("Couldn't write to file");
+        }
+    })
+}
+
+function intro() {
+    console.log("Welcome to the Team Profile Generator!");
+    console.log("We start by adding a manager first!");
+}
+
+function init() {
+    managerPrompt();
+}
+
+intro();
+init();
 
 // Initial Prompt sequence:
 
@@ -53,163 +253,136 @@ const htmlGenerate2 = `
 // Intern:
 // school
 
-const employeeQuestions = [{
-    type: `input`,
-    message: `Whats the employee's name?: `,
-    name: `name`,
-},{
-    type: `list`,
-    message: `Choose your Employee's role: `,
-    choices: [`Manager`, `Engineer`, `Intern`],
-    name: `role`,
-},{
-    type: `input`,
-    message: `Whats the employee's id?: `,
-    name: `id`,
-},{
-    type: `input`,
-    message: `Whats the employee's email?: `,
-    name: `email`,
-}];
+// const employeeQuestions = [{
+//     type: `input`,
+//     message: `Whats the employee's name?: `,
+//     name: `name`,
+// },{
+//     type: `list`,
+//     message: `Choose your Employee's role: `,
+//     choices: [`Manager`, `Engineer`, `Intern`],
+//     name: `role`,
+// },{
+//     type: `input`,
+//     message: `Whats the employee's id?: `,
+//     name: `id`,
+// },{
+//     type: `input`,
+//     message: `Whats the employee's email?: `,
+//     name: `email`,
+// }];
 
-const managerQuestions = [{
-    type: `input`,
-    message: `Enter an office number: `,
-    name: `officeNumber`,
-}];
+// async function again() {
+//     inquirer
+//     .prompt([{
+//         type: `list`,
+//         message: `Add another Employee?`,
+//         choices: [`Yes`, `No`],
+//         name: `again`,
+//     }]).then((response) => {
+//         if (response.again === `Yes`) {
+//             init();
+//             return;
+//         } else {
+//             console.log(`Your HTML file shall be generated`);
+//             return;
+//         }
+//     })
+// }
 
-const engineerQuestions = [{
-    type: `input`,
-    message: `Enter your github username: `,
-    name: `github`,
-}];
+// switch(response.role) {
+//     case(`Manager`):
+//         var man = managerPrompt();
+//         var manager = new Manager(response.name, response.role, response.id, response.email, man);
+//         const htmlManager =
+//             `<div class="card col-4 p-3 bg-secondary text-light border">
+//             <h2 id="name">${manager.getName()}</h2>
+//             <h3 id="role">${manager.getRole()}</h3>
+//             <ul class="list-group list-group-flush rounded">
+//                 <li id="id" class="list-group-item bg-white">ID: ${manager.getId()}</li>
+//                 <li id="email" class="list-group-item bg-white">Email: ${manager.getEmail()}</li>
+//                 <li id="office-number" class="list-group-item bg-white">Office Number: ${manager.officeNumber}</li>
+//             </ul>
+//             </div>`;
+//         htmlEmployee.push(htmlManager);
+//         // again();
+//         break;
+//     case(`Engineer`):
+//         var githubName = await engineerPrompt();
+//         var engineer = new Engineer(response.name, response.role, response.id, response.email, githubName);
+//         const htmlEngineer =
+//             `<div class="card col-4 p-3 bg-secondary text-light border">
+//             <h2 id="name">${engineer.getName()}</h2>
+//             <h3 id="role">${engineer.getRole()}</h3>
+//             <ul class="list-group list-group-flush rounded">
+//                 <li id="id" class="list-group-item bg-white">ID: ${engineer.getId()}</li>
+//                 <li id="email" class="list-group-item bg-white">Email: ${engineer.getEmail()}</li>
+//                 <li id="office-number" class="list-group-item bg-white">Github: ${engineer.getGithub()}</li>
+//             </ul>
+//             </div>`;
+//         htmlEmployee.push(htmlEngineer);
+//         // again();
+//         break;
+//     case(`Intern`):
+//         var school = await internPrompt();
+//         var intern = new Intern(response.name, response.role, response.id, response.email, school);
+//         const htmlIntern =
+//             `<div class="card col-4 p-3 bg-secondary text-light border">
+//             <h2 id="name">${intern.getName()}</h2>
+//             <h3 id="role">${intern.getRole()}</h3>
+//             <ul class="list-group list-group-flush rounded">
+//                 <li id="id" class="list-group-item bg-white">ID: ${intern.getId()}</li>
+//                 <li id="email" class="list-group-item bg-white">Email: ${intern.getEmail()}</li>
+//                 <li id="office-number" class="list-group-item bg-white">School: ${intern.getSchool()}</li>
+//             </ul>
+//             </div>`;
+//         htmlEmployee.push(htmlIntern);
+//         // again();
+//         break;
+//     }
 
-const internQuestions = [{
-    type: `input`,
-    message: `Enter the school you attended: `,
-    name: `school`,
-}];
+    // inquirer.prompt([{
+    //     type: `list`,
+    //     message: `Add an Employee?`,
+    //     choices: [`Yes`, `No`],
+    //     name: `add`,
+    // }])
+    // .then(result => {
+    //     if (result.add === `Yes`) {
+    //         employeePrompt();
+    //     }
+    //     return result
+    // }).then(result => {
+    //     if (result.add === `No`) {
+    //         generateHTML();
+    //     } else {
+    //         init();
+    //     }
+    // })
 
 // Only gets prompted if manager is selected
-async function managerPrompt() {
-    inquirer
-    .prompt(managerQuestions)
-    .then((response) => {
-        return response.officeNumber;
-    })
-}
+// async function managerPrompt() {
+//     inquirer
+//     .prompt(managerQuestions)
+//     .then((response) => {
+//         return response.officeNumber;
+//     })
+// }
 
 // Only gets prompted if engineer is selected
-async function engineerPrompt() {
-    inquirer
-    .prompt(engineerQuestions)
-    .then((response) => {
-        return response.officeNumber;
-    })
-}
+// async function engineerPrompt() {
+//     inquirer
+//     .prompt(engineerQuestions)
+//     .then((response) => {
+//         return response.officeNumber;
+//     })
+// }
 
 // Only gets prompted if intern is selected
-async function internPrompt() {
-    inquirer
-    .prompt(internQuestions)
-    .then((response) => {
-        return response.officeNumber;
-    })
-}
-
-// Returns an employee object that turns into a manger, engineer, or intern
-async function employeePrompt() {
-    let response = await inquirer.prompt(employeeQuestions);
-    // .then((response) => {
-    switch(response.role) {
-        case(`Manager`):
-            var office = await managerPrompt();
-            var manager = new Manager(response.name, response.role, response.id, response.email, office);
-            const htmlManager =
-                `<div class="card col-4 p-3 bg-secondary text-light border">
-                <h2 id="name">${manager.getName()}</h2>
-                <h3 id="role">${manager.getRole()}</h3>
-                <ul class="list-group list-group-flush rounded">
-                    <li id="id" class="list-group-item bg-white">ID: ${manager.getId()}</li>
-                    <li id="email" class="list-group-item bg-white">Email: ${manager.getEmail()}</li>
-                    <li id="office-number" class="list-group-item bg-white">Office Number: ${manager.officeNumber}</li>
-                </ul>
-                </div>`;
-            htmlEmployee.push(htmlManager);
-            break;
-        case(`Engineer`):
-            var githubName = await engineerPrompt();
-            var engineer = new Engineer(response.name, response.role, response.id, response.email, githubName);
-            const htmlEngineer =
-                `<div class="card col-4 p-3 bg-secondary text-light border">
-                <h2 id="name">${engineer.getName()}</h2>
-                <h3 id="role">${engineer.getRole()}</h3>
-                <ul class="list-group list-group-flush rounded">
-                    <li id="id" class="list-group-item bg-white">ID: ${engineer.getId()}</li>
-                    <li id="email" class="list-group-item bg-white">Email: ${engineer.getEmail()}</li>
-                    <li id="office-number" class="list-group-item bg-white">Github: ${engineer.getGithub()}</li>
-                </ul>
-                </div>`;
-            htmlEmployee.push(htmlEngineer);
-            break;
-        case(`Intern`):
-            var school = await internPrompt();
-            var intern = new Intern(response.name, response.role, response.id, response.email, school);
-            const htmlIntern =
-                `<div class="card col-4 p-3 bg-secondary text-light border">
-                <h2 id="name">${intern.getName()}</h2>
-                <h3 id="role">${intern.getRole()}</h3>
-                <ul class="list-group list-group-flush rounded">
-                    <li id="id" class="list-group-item bg-white">ID: ${intern.getId()}</li>
-                    <li id="email" class="list-group-item bg-white">Email: ${intern.getEmail()}</li>
-                    <li id="office-number" class="list-group-item bg-white">School: ${intern.getSchool()}</li>
-                </ul>
-                </div>`;
-            htmlEmployee.push(htmlIntern);
-            break;
-        }
-    // });
-}
-
-function generateHTML(employee) {
-    switch(employee.role) {
-        case(`Manager`):
-
-        case(`Engineer`):
-
-        case(`Intern`):
-
-    }
-}
-
-function again() {
-    inquirer
-    .prompt([{
-        type: `list`,
-        message: `Add another Employee?`,
-        choices: [`Yes`, `No`],
-        name: `again`,
-    }]).then((response) => {
-        if (response.again === `Yes`) {
-            init();
-            return;
-        } else {
-            console.log(`Your HTML file shall be generated`);
-            return;
-        }
-    })
-}
-
-function intro() {
-    console.log("Welcome to the Team Profile Generator!");
-    console.log("Please fill out the following prompts to create a team");
-}
-
-function init() {
-    employeePrompt();
-    // generateHTML(employeePrompt());
-    // generateHTML(htmlEmployee)
-}
-
-intro();
-init();
+// async function internPrompt() {
+//     inquirer
+//     .prompt(internQuestions)
+//     .then((response) => {
+//         return response.officeNumber;
+//     })
+// }
