@@ -17,7 +17,7 @@ In order to use this, simply clone down the from this repository, and navigate t
 
 ## Tests
 Tests were done to all the major class files
-https://watch.screencastify.com/v/PsBAjnAZSTHGbkIfo36y
+https://watch.screencastify.com/v/zCMyjvyn19jTSdUe8adC
 
 ## Questions
 For questions, reach me at my github: https://github.com/kh288
